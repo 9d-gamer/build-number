@@ -137,19 +137,6 @@ function main() {
             fs.writeFileSync('BUILD_NUMBER', nextBuildNumber.toString());
             
             //Cleanup
-            if (nrTags) {
-                console.log(`Deleting ${nrTags.length} older build counters...`);
-            
-                for (let nrTag of nrTags) {
-                    request('DELETE', `/repos/${env.GITHUB_REPOSITORY}/git/${nrTag.ref}`, null, (err, status, result) => {
-                        if (status !== 204 || err) {
-                            console.warn(`Failed to delete ref ${nrTag.ref}, status: ${status}, err: ${err}, result: ${JSON.stringify(result)}`);
-                        } else {
-                            console.log(`Deleted ${nrTag.ref}`);
-                        }
-                    });
-                }
-            }
 
         });
     });
