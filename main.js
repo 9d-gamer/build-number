@@ -82,7 +82,7 @@ function main() {
         }
     }
 
-    request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/${prefix}build-number-`, null, (err, status, result) => {
+    request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/${prefix}build-`, null, (err, status, result) => {
     
         let nextBuildNumber, nrTags;
     
@@ -91,13 +91,13 @@ function main() {
             nextBuildNumber = 1;
             nrTags = [];
         } else if (status === 200) {
-            const regexString = `/${prefix}build-number-(\\d+)$`;
+            const regexString = `/${prefix}build-(\\d+)$`;
             const regex = new RegExp(regexString);
             nrTags = result.filter(d => d.ref.match(regex));
             
             const MAX_OLD_NUMBERS = 5; //One or two ref deletes might fail, but if we have lots then there's something wrong!
             if (nrTags.length > MAX_OLD_NUMBERS) {
-                fail(`ERROR: Too many ${prefix}build-number- refs in repository, found ${nrTags.length}, expected only 1. Check your tags!`);
+                fail(`ERROR: Too many ${prefix}build- refs in repository, found ${nrTags.length}, expected only 1. Check your tags!`);
             }
             
             //Existing build numbers:
@@ -117,7 +117,7 @@ function main() {
         }
 
         let newRefData = {
-            ref:`refs/tags/${prefix}build-number-${nextBuildNumber}`, 
+            ref:`refs/tags/${prefix}build-${nextBuildNumber}`, 
             sha: env.GITHUB_SHA
         };
     
